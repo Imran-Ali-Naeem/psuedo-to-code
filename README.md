@@ -1,203 +1,232 @@
+# GPT-2 LoRA Fine-Tuning for Pseudocode-to-Code Generation
+
+A fine-tuned GPT-2 model that generates source code from natural language pseudocode using Parameter-Efficient Fine-Tuning (LoRA).
+
+This project uses the SPOC (Synthetic Pseudocode to Code) dataset and applies LoRA adapters on GPT-2 to reduce training cost while maintaining strong code generation capabilities.
+
 ---
-base_model: gpt2
-library_name: peft
+
+## 🚀 Overview
+
+Converting pseudocode into executable source code is an important task in program synthesis and AI-assisted software development.
+
+This project fine-tunes GPT-2 on paired pseudocode-code examples from the SPOC dataset, enabling the model to learn mappings between algorithmic descriptions and their corresponding implementations.
+
 ---
 
-# Model Card for Model ID
+## ✨ Features
 
-<!-- Provide a quick summary of what the model is/does. -->
+* GPT-2 based code generation
+* LoRA (Low-Rank Adaptation) fine-tuning
+* Program-level SPOC dataset preprocessing
+* Custom pseudocode-to-code dataset creation
+* Memory-efficient training
+* Automated tokenization pipeline
+* Model export and deployment ready
 
+---
 
+## 🏗️ Model Architecture
 
-## Model Details
+### Base Model
 
-### Model Description
+* GPT-2
 
-<!-- Provide a longer summary of what this model is. -->
+### Fine-Tuning Method
 
+* LoRA (Low-Rank Adaptation)
 
+### LoRA Configuration
 
-- **Developed by:** [More Information Needed]
-- **Shared by [optional]:** [More Information Needed]
-- **Model type:** [More Information Needed]
-- **Language(s) (NLP):** [More Information Needed]
-- **License:** [More Information Needed]
-- **Finetuned from model [optional]:** [More Information Needed]
+| Parameter      | Value          |
+| -------------- | -------------- |
+| Rank (r)       | 8              |
+| Alpha          | 32             |
+| Dropout        | 0.1            |
+| Bias           | None           |
+| Target Modules | c_attn, c_proj |
 
-### Model Sources [optional]
+---
 
-<!-- Provide the basic links for the model. -->
+## 📂 Dataset
 
-- **Repository:** [More Information Needed]
-- **Paper [optional]:** [More Information Needed]
-- **Demo [optional]:** [More Information Needed]
+### SPOC Dataset
 
-## Uses
+The project uses the SPOC dataset containing:
 
-<!-- Address questions around how the model is intended to be used, including the foreseeable users of the model and those affected by the model. -->
+* Natural language pseudocode
+* Corresponding source code
+* Competitive programming solutions
+* Program-level code samples
 
-### Direct Use
+### Data Processing Pipeline
 
-<!-- This section is for the model use without fine-tuning or plugging into a larger ecosystem/app. -->
+1. Download SPOC dataset
+2. Group program lines by problem ID and submission ID
+3. Merge pseudocode lines into complete programs
+4. Merge code lines into complete solutions
+5. Create training pairs
 
-[More Information Needed]
+Example format:
 
-### Downstream Use [optional]
+```text
+### Pseudocode:
+Read integer n
+Loop from 1 to n
+Print the value
 
-<!-- This section is for the model use when fine-tuned for a task, or when plugged into a larger ecosystem/app -->
+### Code:
+for(int i=1;i<=n;i++){
+    cout << i << endl;
+}
+```
 
-[More Information Needed]
+---
 
-### Out-of-Scope Use
+## 📁 Project Structure
 
-<!-- This section addresses misuse, malicious use, and uses that the model will not work well for. -->
+```text
+project/
+├── notebook.ipynb
+├── README.md
+```
 
-[More Information Needed]
+---
 
-## Bias, Risks, and Limitations
+## ⚙️ Training Configuration
 
-<!-- This section is meant to convey both technical and sociotechnical limitations. -->
+| Parameter           | Value |
+| ------------------- | ----- |
+| Model               | GPT-2 |
+| Fine-Tuning         | LoRA  |
+| Epochs              | 2     |
+| Max Sequence Length | 1024  |
+| Optimizer           | AdamW |
+| Batch Size          | 4     |
+| Validation Split    | 10%   |
 
-[More Information Needed]
+---
 
-### Recommendations
+## 🔧 Technologies Used
 
-<!-- This section is meant to convey recommendations with respect to the bias, risk, and technical limitations. -->
+* Python
+* PyTorch
+* Transformers
+* PEFT (LoRA)
+* Hugging Face
+* NumPy
+* Pandas
+* Matplotlib
 
-Users (both direct and downstream) should be made aware of the risks, biases and limitations of the model. More information needed for further recommendations.
+---
 
-## How to Get Started with the Model
+## 📦 Installation
 
-Use the code below to get started with the model.
+Clone the repository:
 
-[More Information Needed]
+```bash
+git clone https://github.com/your-username/gpt2-pseudocode-to-code.git
+cd gpt2-pseudocode-to-code
+```
 
-## Training Details
+Install dependencies:
 
-### Training Data
+```bash
+pip install -r requirements.txt
+```
 
-<!-- This should link to a Data Card, perhaps with a short stub of information on what the training data is all about as well as documentation related to data pre-processing or additional filtering. -->
+---
 
-[More Information Needed]
+## 🚀 Training
 
-### Training Procedure 
+Run the notebook:
 
-<!-- This relates heavily to the Technical Specifications. Content here should link to that section when it is relevant to the training procedure. -->
+```bash
+jupyter notebook
+```
 
-#### Preprocessing [optional]
+Open:
 
-[More Information Needed]
+```text
+notebook.ipynb
+```
 
+and execute all cells.
 
-#### Training Hyperparameters
+---
 
-- **Training regime:** [More Information Needed] <!--fp32, fp16 mixed precision, bf16 mixed precision, bf16 non-mixed precision, fp16 non-mixed precision, fp8 mixed precision -->
+## 🎯 Inference
 
-#### Speeds, Sizes, Times [optional]
+Input:
 
-<!-- This section provides information about throughput, start/end time, checkpoint size if relevant, etc. -->
+```text
+Read an integer n
+Print numbers from 1 to n
+```
 
-[More Information Needed]
+Generated Output:
 
-## Evaluation
+```cpp
+for(int i = 1; i <= n; i++){
+    cout << i << endl;
+}
+```
 
-<!-- This section describes the evaluation protocols and provides the results. -->
+---
 
-### Testing Data, Factors & Metrics
+## 📊 Evaluation
 
-#### Testing Data
+The project evaluates model performance using:
 
-<!-- This should link to a Data Card if possible. -->
+* Validation Loss
+* Token Prediction Accuracy
+* BLEU Score (SacreBLEU)
 
-[More Information Needed]
+---
 
-#### Factors
+## 💾 Model Saving
 
-<!-- These are the things the evaluation is disaggregating by, e.g., subpopulations or domains. -->
+The trained model and tokenizer are exported using:
 
-[More Information Needed]
+```python
+model.save_pretrained("./spoc_gpt2_finetuned")
+tokenizer.save_pretrained("./spoc_gpt2_finetuned")
+```
 
-#### Metrics
+---
 
-<!-- These are the evaluation metrics being used, ideally with a description of why. -->
+## 🔮 Future Improvements
 
-[More Information Needed]
+* Upgrade to CodeLlama or DeepSeek-Coder
+* Train on larger code generation datasets
+* Add beam search decoding
+* Deploy as a Hugging Face Space
+* Integrate with VS Code extension
 
-### Results
+---
 
-[More Information Needed]
+## 📚 References
 
-#### Summary
+### SPOC Dataset
 
+Synthetic Pseudocode to Code Dataset
 
+### GPT-2
 
-## Model Examination [optional]
+Radford et al. (2019)
 
-<!-- Relevant interpretability work for the model goes here -->
+### LoRA
 
-[More Information Needed]
+Hu et al. (2021)
 
-## Environmental Impact
+https://arxiv.org/abs/2106.09685
 
-<!-- Total emissions (in grams of CO2eq) and additional considerations, such as electricity usage, go here. Edit the suggested text below accordingly -->
+---
 
-Carbon emissions can be estimated using the [Machine Learning Impact calculator](https://mlco2.github.io/impact#compute) presented in [Lacoste et al. (2019)](https://arxiv.org/abs/1910.09700).
+## 👨‍💻 Author
 
-- **Hardware Type:** [More Information Needed]
-- **Hours used:** [More Information Needed]
-- **Cloud Provider:** [More Information Needed]
-- **Compute Region:** [More Information Needed]
-- **Carbon Emitted:** [More Information Needed]
+**Imran Ali**
 
-## Technical Specifications [optional]
+Computer Science Student | Machine Learning & Generative AI Enthusiast
 
-### Model Architecture and Objective
-
-[More Information Needed]
-
-### Compute Infrastructure
-
-[More Information Needed]
-
-#### Hardware
-
-[More Information Needed]
-
-#### Software
-
-[More Information Needed]
-
-## Citation [optional]
-
-<!-- If there is a paper or blog post introducing the model, the APA and Bibtex information for that should go in this section. -->
-
-**BibTeX:**
-
-[More Information Needed]
-
-**APA:**
-
-[More Information Needed]
-
-## Glossary [optional]
-
-<!-- If relevant, include terms and calculations in this section that can help readers understand the model or model card. -->
-
-[More Information Needed]
-
-## More Information [optional]
-
-[More Information Needed]
-
-## Model Card Authors [optional]
-
-[More Information Needed]
-
-## Model Card Contact
-
-[More Information Needed]
-
-
-### Framework versions
-
-- PEFT 0.7.1
+If you found this project useful, consider giving it a ⭐ on GitHub.
