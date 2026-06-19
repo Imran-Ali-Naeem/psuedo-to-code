@@ -89,6 +89,7 @@ for(int i=1;i<=n;i++){
 project/
 ├── notebook.ipynb
 ├── README.md
+├── requirements.txt
 ```
 
 ---
